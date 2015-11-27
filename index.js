@@ -12,17 +12,18 @@ var db = null;
 
 var server = http.createServer(function(req, res) {
   if (req.method == 'GET' && url.parse(req.url).pathname == '/create') {
-    res.writeHead(200, {"Content-Type": "text/plain"});
     var adminDb = db.admin();
     username = crypto.randomBytes(12).toString('hex');
     password = crypto.randomBytes(12).toString('hex');
     dbname = crypto.randomBytes(12).toString('hex');
     adminDb.addUser(username, password, {roles: [ { role: "readWrite", db: dbname } ]},function(err, result) {
         if (err) {
-            console.error("Could not create user with name " + username + "; password: " + password + " for database " + dbname + "!");
-            res.end("Could not create user and database in mongodb!\n");
+            console.error("Could not create user with name " + username + "; password: " + password + " for database " + dbname + "!\n" + err);
+            res.writeHead(500, {"Content-Type": "text/plain"});
+            res.end("Error! Could not create user and database in mongodb!\n");
         } else {
             mongo_conn_string = "mongodb://" + username + ":" + password + "@" + url.parse(mongo_uri).host + "/" + dbname;
+            res.writeHead(200, {"Content-Type": "text/plain"});
             res.end(mongo_conn_string + "\n");
         }
     });
