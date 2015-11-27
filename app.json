@@ -1,0 +1,8 @@
+{
+  "name": "Pretty simple user nanagement for MongoDB",
+  "description": "A _very_ simple user manamgenet service for self-servicing MongoDB user creation",
+  "repository": "https://github.com/nightw/psum-for-mongodb",
+  "logo": "http://node-js-sample.herokuapp.com/node.svg",
+  "keywords": ["node","mongodb","users","user","user management","user mgmt"],
+  "image": "heroku/nodejs"
+}

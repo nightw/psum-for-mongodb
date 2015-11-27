@@ -1,0 +1,29 @@
+{
+  "name": "psum-for-mongodb",
+  "version": "0.1.0",
+  "description": "A _very_ simple user manamgenet service for self-servicing MongoDB user creation",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "q" : "1.0.1",
+    "mongodb": "2.0.49"
+  },
+  "engines": {
+    "node": "0.12.7"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nightw/psum-for-mongodb"
+  },
+  "keywords": [
+    "node",
+    "mongodb",
+    "users",
+    "user",
+    "user management",
+    "user mgmt"
+  ],
+  "license": "MIT"
+}
