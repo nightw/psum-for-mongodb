@@ -12,11 +12,11 @@ var db = null;
 
 var server = http.createServer(function(req, res) {
   if (req.method == 'GET' && url.parse(req.url).pathname == '/create') {
-    var adminDb = db.admin();
     username = crypto.randomBytes(12).toString('hex');
     password = crypto.randomBytes(12).toString('hex');
     dbname = crypto.randomBytes(12).toString('hex');
-    adminDb.addUser(username, password, {roles: [ { role: "readWrite", db: dbname } ]},function(err, result) {
+    new_db_conn = db.db(dbname);
+    new_db_conn.addUser(username, password, {roles: [ { role: "readWrite", db: dbname } ]},function(err, result) {
         if (err) {
             console.error("Could not create user with name " + username + "; password: " + password + " for database " + dbname + "!\n" + err);
             res.writeHead(500, {"Content-Type": "text/plain"});
