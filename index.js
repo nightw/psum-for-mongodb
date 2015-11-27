@@ -7,6 +7,7 @@ var MongoClient = require('mongodb').MongoClient;
 
 var port = process.env.PORT || 5000;
 var mongo_uri = process.env.MONGO_URI || "mongodb://localhost:27017";
+var db = null;
 
 var server = http.createServer(function(req, res) {
   if (req.method == 'GET' && url.parse(req.url).pathname == '/create') {
@@ -21,19 +22,28 @@ var server = http.createServer(function(req, res) {
 function init(callback) {
   try {
     // Use connect method to connect to the Server 
-    MongoClient.connect(mongo_uri, function(err, db) {
+    MongoClient.connect(mongo_uri, function(err, _db) {
         if (err) {
             callback(err);
         }
+        db = _db;
         console.log("Connected correctly to MongoDB server.");
-
-        db.close();
     });
     callback(null);
   } catch(err) {
     callback(err);
   }
 }
+
+server.on('close', function() {
+    db.close();
+    console.log('Disconnected from MongoDB');
+    console.log('Stopping server ...');
+});
+
+process.on('SIGINT', function() {
+  server.close();
+});
 
 init(function start(err){
   if (err) {
