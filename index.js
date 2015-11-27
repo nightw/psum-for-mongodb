@@ -2,6 +2,7 @@
 
 var http = require('http');
 var url = require('url');
+var crypto = require('crypto');
 var Q = require('q');
 var MongoClient = require('mongodb').MongoClient;
 
@@ -13,15 +14,16 @@ var server = http.createServer(function(req, res) {
   if (req.method == 'GET' && url.parse(req.url).pathname == '/create') {
     res.writeHead(200, {"Content-Type": "text/plain"});
     var adminDb = db.admin();
-    username = "username";
-    password = "password";
-    dbname = "dbname";
+    username = crypto.randomBytes(12).toString('hex');
+    password = crypto.randomBytes(12).toString('hex');
+    dbname = crypto.randomBytes(12).toString('hex');
     adminDb.addUser(username, password, {roles: [ { role: "readWrite", db: dbname } ]},function(err, result) {
         if (err) {
             console.error("Could not create user with name " + username + "; password: " + password + " for database " + dbname + "!");
-            res.end("Could not create user with name " + username + "; password: " + password + " for database " + dbname + "!\n");
+            res.end("Could not create user and database in mongodb!\n");
         } else {
-            res.end("Created user with name " + username + "; password: " + password + " for database " + dbname + " successfully!\n");
+            mongo_conn_string = "mongodb://" + username + ":" + password + "@" + url.parse(mongo_uri).host + "/" + dbname;
+            res.end(mongo_conn_string + "\n");
         }
     });
   } else {
