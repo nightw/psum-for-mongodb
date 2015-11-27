@@ -1,7 +1,7 @@
 {
   "name": "psum-for-mongodb",
   "version": "0.1.0",
-  "description": "A _very_ simple user manamgenet service for self-servicing MongoDB user creation",
+  "description": "A _very_ simple user management service for self-servicing MongoDB user creation",
   "main": "index.js",
   "scripts": {
     "start": "node index.js"
