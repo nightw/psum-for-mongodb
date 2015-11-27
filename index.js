@@ -6,13 +6,24 @@ var Q = require('q');
 var MongoClient = require('mongodb').MongoClient;
 
 var port = process.env.PORT || 5000;
-var mongo_uri = process.env.MONGO_URI || "mongodb://localhost:27017";
+var mongo_uri = process.env.MONGO_URI || "mongodb://admin:admin@localhost:27017";
 var db = null;
 
 var server = http.createServer(function(req, res) {
   if (req.method == 'GET' && url.parse(req.url).pathname == '/create') {
     res.writeHead(200, {"Content-Type": "text/plain"});
-    res.end("Request came in successfully!\n");
+    var adminDb = db.admin();
+    username = "username";
+    password = "password";
+    dbname = "dbname";
+    adminDb.addUser(username, password, {roles: [ { role: "readWrite", db: dbname } ]},function(err, result) {
+        if (err) {
+            console.error("Could not create user with name " + username + "; password: " + password + " for database " + dbname + "!");
+            res.end("Could not create user with name " + username + "; password: " + password + " for database " + dbname + "!\n");
+        } else {
+            res.end("Created user with name " + username + "; password: " + password + " for database " + dbname + " successfully!\n");
+        }
+    });
   } else {
     res.statusCode = 404;
     res.end("Only /create URL is supported currently");
