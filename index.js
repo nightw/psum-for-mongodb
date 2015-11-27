@@ -6,7 +6,7 @@ var Q = require('q');
 var MongoClient = require('mongodb').MongoClient;
 
 var port = process.env.PORT || 5000;
-var mongo_url = process.env.MONGO_URI || "mongodb://localhost:27017";
+var mongo_uri = process.env.MONGO_URI || "mongodb://localhost:27017";
 
 var server = http.createServer(function(req, res) {
   if (req.method == 'GET' && url.parse(req.url).pathname == '/create') {
@@ -21,7 +21,7 @@ var server = http.createServer(function(req, res) {
 function init(callback) {
   try {
     // Use connect method to connect to the Server 
-    MongoClient.connect(mongo_url, function(err, db) {
+    MongoClient.connect(mongo_uri, function(err, db) {
         if (err) {
             callback(err);
         }
